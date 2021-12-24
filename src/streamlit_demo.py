@@ -3,7 +3,7 @@ import streamlit as st
 from io import StringIO 
 
 from evaluation import eval
-
+@st.cache
 def run():
     
     st.title("Enterpret Internship Assignment 1.")
