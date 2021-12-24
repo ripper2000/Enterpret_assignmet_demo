@@ -13,8 +13,8 @@ def load_model(pyabsa_path,st_path):
     eval_ = eval()
     pyabsa_model , st_model = eval_.load_models(pyabsa_path,st_path)
     return pyabsa_model,st_model
-pyabsa_model ,st_model = load_model(pyabsa_path="model/pyabsa/checkpoints",st_path="model/simple transformer/final")
-def run():
+
+def run(pyabsa_model ,st_model):
     
     st.title("Enterpret Internship Assignment 1.")
     st.header('Predicting sentiment for selected aspect in given phrase')
@@ -45,5 +45,5 @@ def run():
         # st.balloons()
 
 if __name__ == "__main__":
-
-    run()
+    pyabsa_model ,st_model = load_model(pyabsa_path="model/pyabsa/checkpoints",st_path="model/simple transformer/final")
+    run(pyabsa_model ,st_model)
