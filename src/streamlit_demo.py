@@ -31,7 +31,7 @@ def run():
         output = str(sent_dict[output]) # since its a list, get the 1st item
         st.success(f"The given phrase is {output} towards aspect {aspect} ")
         # st.balloons()
-    elif st.button("Predict using simple transformer model"):
+    if st.button("Predict using simple transformer model"):
         eval_ = eval()
 
         output = eval_.eval_ST_text(text =text.lower(),aspect =aspect.lower(),model=st_model)
