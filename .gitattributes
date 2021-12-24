@@ -1,0 +1,4 @@
+/home/cnarte/Ankit/enterpret/final_absa/model/** filter=lfs diff=lfs merge=lfs -text
+/home/cnarte/Ankit/enterpret/final_absa/data/** filter=lfs diff=lfs merge=lfs -text
+model/simple[[:space:]]transformer/final/pytorch_model.bin filter=lfs diff=lfs merge=lfs -text
+*.bin filter=lfs diff=lfs merge=lfs -text
