@@ -3,13 +3,17 @@ import streamlit as st
 from io import StringIO 
 
 from evaluation import eval
+# class FileReference:
+#     def __init__(self, filename):
+#         self.filename = filename
 
-@st.cache
+# @st.cache()
 def load_model(pyabsa_path,st_path):
+    
     eval_ = eval()
     pyabsa_model , st_model = eval_.load_models(pyabsa_path,st_path)
     return pyabsa_model,st_model
-
+pyabsa_model ,st_model = load_model(pyabsa_path="model/pyabsa/checkpoints",st_path="model/simple transformer/final")
 def run():
     
     st.title("Enterpret Internship Assignment 1.")
@@ -24,7 +28,7 @@ def run():
         1:"Neutral",
         2:"Positive"
     }
-    pyabsa_model ,st_model = load_model(pyabsa_path="model/pyabsa/checkpoints",st_path="model/simple transformer/final")
+    
     if st.button("Predict using pyabsa model"):
         eval_ = eval()
 
