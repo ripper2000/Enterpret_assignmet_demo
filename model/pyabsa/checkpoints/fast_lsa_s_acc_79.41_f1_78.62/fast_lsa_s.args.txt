@@ -1,0 +1,38 @@
+model: <class 'pyabsa.core.apc.models.fast_lsa_s.FAST_LSA_S'>
+optimizer: adam
+learning_rate: 2e-05
+pretrained_bert: microsoft/deberta-v3-base
+cache_dataset: True
+patience: 22981.020187500002
+max_seq_len: 80
+SRD: 3
+lcf: cdw
+window: lr
+eta: -1
+dropout: 0.5
+l2reg: 1e-08
+num_epoch: 30
+batch_size: 16
+initializer: xavier_uniform_
+seed: 2672
+embed_dim: 768
+hidden_dim: 768
+polarities_dim: 3
+log_step: 1000
+dynamic_truncate: True
+srd_alignment: True
+evaluate_begin: 10
+similarity_threshold: 1
+cross_validate_fold: -1
+dataset_name: custom_dataset
+dataset_file: {'train': ['drive/MyDrive/Enterpret/absa/data/3848/apc train.txt'], 'test': ['drive/MyDrive/Enterpret/absa/data/3848/apc test.txt']}
+device: cuda:0
+auto_device: True
+model_name: fast_lsa_s
+save_mode: 1
+model_path_to_save: checkpoints
+inputs_cols: {'left_lcfs_vec', 'lcfs_vec', 'right_lcfs_vec', 'spc_mask_vec', 'text_bert_indices'}
+spacy_model: en_core_web_sm
+index_to_label: {0: 'Negative', 1: 'Neutral', 2: 'Positive'}
+metrics_of_this_checkpoint: {'acc': 0.7941176470588235, 'f1': 0.7862055506204744}
+max_test_metrics: {'max_apc_test_acc': 0.7941176470588235, 'max_apc_test_f1': 0.7862055506204744, 'max_ate_test_f1': 0}

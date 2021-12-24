@@ -6,6 +6,12 @@ import os
 import re
 from nltk.corpus import stopwords
 import torch
+from pyabsa import APCCheckpointManager, ABSADatasetList, available_checkpoints
+import spacy
+from spacy.cli import download
+print(download("en_core_web_sm"))
+
+
 # device = torch.device('cpu')
 class eval:
     def __init__(self) -> None:
@@ -37,12 +43,20 @@ class eval:
         text = ' '.join(text)
         return text
 
-    def eval_simple_transformer_text(self,text,aspect,model_path):
-        try:
-            model = ClassificationModel(
-                'bert',model_path,
+    def load_models(self ,pyabsa_path,st_path):
+        pyabsa_model =APCCheckpointManager.get_sentiment_classifier(
+                                                                checkpoint=pyabsa_path,
+                                                                auto_device=True,  # Use CUDA if available
+                                                                
+                                                                )
+        st_model = ClassificationModel(
+                'bert',st_path,
                 use_cuda=torch.cuda.is_available(),
             )
+        return pyabsa_model ,st_model
+    def eval_ST_text(self,text,aspect,model):
+        try:
+            
             preds, raw_outputs = model.predict([text,aspect])
             return preds
         except Exception as e:
@@ -65,12 +79,48 @@ class eval:
         except Exception as e:
             print(e)
             return e
+    def eval_pyabsa_text(self , text ,aspect ,model):
+        try:
+            text = text.lower().replace("\n","")
+            # print(text)
+            label_dict = {
+                "Negative": 0,
+                "Neutral": 1,
+                "Positive":2
+            }
+            rev_dict = {value : key for (key, value) in label_dict.items()}
+            # print(rev_dict)
+            text_to_send = text.replace(aspect,"[ASP]"+aspect+"[ASP]")
+            # print(text_to_send)
+            
+            result = model.infer(text_to_send,print_result=True)
+            return label_dict[result[0]['sentiment'][0]]
+        except Exception as e:
+            print(e)
+            return 
+
+    def eval_pyabsa_dataframe(self,df,model_path,out_path):
+        try:
+            
+            model = APCCheckpointManager.get_sentiment_classifier(
+                                                                checkpoint=model_path,
+                                                                auto_device=True,  # Use CUDA if available
+                                                                
+                                                                )
+            df["label"] = df.apply(lambda row: self.eval_pyabsa_text(row.text, row.aspect,model),axis=1)
+            df.to_csv(out_path,index=False)
+            return "Success"
+        except Exception as e:
+            print(e)
+            return e
 
 
 if __name__ == "__main__":
     eval = eval()
     df = pd.read_csv("data/test.csv")
     model_path = "model/simple transformer/final"
+    pyabsa_model_path ="model/pyabsa/checkpoints"
     out_path = "data/result/test_preds.csv"
-    # eval.eval_ST_dataframe(df,model_path,out_path)
-    eval.eval_simple_transformer_text("improve your customer service and product availability","Customer service",model_path)
+    pyabsa_out_path = "data/result/test_pyabsa_preds.csv"
+    eval.eval_pyabsa_dataframe(df,pyabsa_model_path,pyabsa_out_path)
+    # eval.eval_simple_transformer_text("improve your customer service and product availability","Customer service",model_path)
