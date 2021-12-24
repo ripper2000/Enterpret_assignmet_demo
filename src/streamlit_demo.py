@@ -4,6 +4,7 @@ from io import StringIO
 
 from evaluation import eval
 
+@st.cache
 def load_model(pyabsa_path,st_path):
     eval_ = eval()
     pyabsa_model , st_model = eval_.load_models(pyabsa_path,st_path)
