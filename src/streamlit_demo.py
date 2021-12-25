@@ -9,7 +9,7 @@ def load_model(pyabsa_path,st_path):
     pyabsa_model = eval_.load_models(pyabsa_path,st_path)
     return pyabsa_model
 
-pyabsa_model ,st_model = load_model(pyabsa_path="model/pyabsa/checkpoints",st_path="model/simple transformer/final")
+pyabsa_model  = load_model(pyabsa_path="model/pyabsa/checkpoints",st_path="model/simple transformer/final")
 
 def run( ):
     
@@ -44,4 +44,4 @@ def run( ):
 
 if __name__ == "__main__":
     pyabsa_model ,st_model = load_model(pyabsa_path="model/pyabsa/checkpoints",st_path="model/simple transformer/final")
-    run(pyabsa_model ,st_model)
+    run()
