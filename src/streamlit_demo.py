@@ -3,13 +3,8 @@ import streamlit as st
 from io import StringIO 
 
 from evaluation import eval
-# class FileReference:
-#     def __init__(self, filename):
-#         self.filename = filename
 
-# @st.cache()
 def load_model(pyabsa_path,st_path):
-    
     eval_ = eval()
     pyabsa_model = eval_.load_models(pyabsa_path,st_path)
     return pyabsa_model
