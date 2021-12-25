@@ -49,11 +49,11 @@ class eval:
                                                                 auto_device=True,  # Use CUDA if available
                                                                 
                                                                 )
-        st_model = ClassificationModel(
-                'bert',st_path,
-                use_cuda=torch.cuda.is_available(),
-            )
-        return pyabsa_model ,st_model
+        # st_model = ClassificationModel(
+        #         'bert',st_path,
+        #         use_cuda=torch.cuda.is_available(),
+        #     )
+        return pyabsa_model 
     def eval_ST_text(self,text,aspect,model):
         try:
             
