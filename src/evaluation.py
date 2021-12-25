@@ -18,6 +18,7 @@ class eval:
         pass
 
     def simple_transformer_clean_text(self,text):
+
         stop_words = set(stopwords.words('english'))   
         text = str(text).lower()
         text = re.sub(r"won\'t", "will not", text)
@@ -43,21 +44,15 @@ class eval:
         text = ' '.join(text)
         return text
 
-    def load_models(self ,pyabsa_path,st_path):
-        pyabsa_model =APCCheckpointManager.get_sentiment_classifier(
-                                                                checkpoint=pyabsa_path,
-                                                                auto_device=True,  # Use CUDA if available
-                                                                
-                                                                )
-        # st_model = ClassificationModel(
-        #         'bert',st_path,
-        #         use_cuda=torch.cuda.is_available(),
-        #     )
-        return pyabsa_model 
-    def eval_ST_text(self,text,aspect,model):
+ 
+    def eval_ST_text(self,text,aspect,model_path):
         try:
+            st_model = ClassificationModel(
+                'bert',model_path,
+                use_cuda=torch.cuda.is_available(),
+            )
             
-            preds, raw_outputs = model.predict([text,aspect])
+            preds, raw_outputs = st_model.predict([text,aspect])
             return preds
         except Exception as e:
             print(e)
@@ -79,8 +74,13 @@ class eval:
         except Exception as e:
             print(e)
             return e
-    def eval_pyabsa_text(self , text ,aspect ,model):
+    def eval_pyabsa_text(self , text ,aspect ,model_path):
         try:
+            model =APCCheckpointManager.get_sentiment_classifier(
+                                                                checkpoint=model_path,
+                                                                auto_device=True,  # Use CUDA if available
+                                                                
+                                                                )
             text = text.lower().replace("\n","")
             # print(text)
             label_dict = {
