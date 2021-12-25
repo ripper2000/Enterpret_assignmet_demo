@@ -48,5 +48,5 @@ def run( ):
     #     # st.balloons()
 
 if __name__ == "__main__":
-
-    run()
+    pyabsa_model ,st_model = load_model(pyabsa_path="model/pyabsa/checkpoints",st_path="model/simple transformer/final")
+    run(pyabsa_model ,st_model)
